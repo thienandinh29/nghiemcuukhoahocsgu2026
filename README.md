@@ -8,8 +8,9 @@ Scientific research project (SGU 2026): can classical ML models predict whether 
 |---|----------|---------|--------|
 | 01 | [`collectdata_s&p_500.ipynb`](collectdata_s%26p_500.ipynb) | Download `^GSPC` (2010–2025) from Yahoo Finance and build the next-day target | `sp500_supervised_data.csv` |
 | 02 | [`raw_eda.ipynb`](raw_eda.ipynb) | Data-quality checks, class balance, price history | figures |
-| 03 | [`data_processing.ipynb`](data_processing.ipynb) | Walk-forward (3-year train / 1-year test) Random Forest with per-window scaling | out-of-sample predictions |
-| 04 | [`Experiment_Machine_Learning.ipynb`](Experiment_Machine_Learning.ipynb) | Compare Logistic Regression, SVM, Random Forest, XGBoost; tune with `RandomizedSearchCV`; back-test vs. Buy & Hold | metrics, equity curves |
+| 03 | [`feature_engineering.ipynb`](feature_engineering.ipynb) | Build 30 causal features (returns, trend, momentum, volatility, volume), the 1-day and 5-day targets, a leakage check, and the chronological 80/20 split | `sp500_supervised_features_final.csv`, `sp500_train_80.csv`, `sp500_test_20.csv` |
+| 04 | [`data_processing.ipynb`](data_processing.ipynb) | Walk-forward (3-year train / 1-year test) Random Forest with per-window scaling | out-of-sample predictions |
+| 05 | [`Experiment_Machine_Learning.ipynb`](Experiment_Machine_Learning.ipynb) | Compare Logistic Regression, SVM, Random Forest, XGBoost; tune with `RandomizedSearchCV`; back-test vs. Buy & Hold | metrics, equity curves |
 
 Each notebook has an *Open in Colab* badge at the top.
 
@@ -40,6 +41,7 @@ Run the notebooks in order (Colab or Jupyter).
 
 ## Known gaps
 
-- The feature-engineering step that creates `sp500_supervised_features_final.csv`, `sp500_train_80.csv` and `sp500_test_20.csv` is not in this repository yet.
+- `feature_engineering.ipynb` was written to match the files the later notebooks read, so the numbers in the results table above come from an earlier, undocumented feature set and will change when you re-run the pipeline.
+- `Close` is kept as a model input because the back-test needs it; it is a non-stationary level and could be dropped from the model features.
 - `RandomizedSearchCV` uses shuffled K-fold; `TimeSeriesSplit` would avoid look-ahead leakage in the tuning step.
 - Saved notebook outputs for the charts predate the restyle; re-run to refresh them.
